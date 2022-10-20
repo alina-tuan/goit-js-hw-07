@@ -26,18 +26,25 @@ function createGalleryItemMarkup(galleryItems) {
       .join('');
 };
 
-galleryContainer.addEventListener('click', onGalleryImgClick);
+galleryContainer.addEventListener("click", onGalleryImgClick);
 function onGalleryImgClick(event) {
-    event.preventDefault();
-    if (event.target.nodeName !== 'IMG') {
-    return
-    };
-    const modalwindow = basicLightbox.create(`
+  event.preventDefault();
+  
+  if (event.target.nodeName !== 'IMG') {
+    return;
+  };
+  console.log(event.target);
+  
+  const modalWindow = basicLightbox.create(`
     <img src = "${event.target.dataset.source}"> width = "800" height = "600"
     `);
-    modalwindow.show();
-  console.log(event.target);
+  modalWindow.show();
+
+  window.addEventListener("keydown", onEscapeClose);
+
+   function onEscapeClose(event) {
+  if (event.key === "Escape") {
+      modalWindow.close();
+    };
+}
 };
-
-
-// console.log(galleryItems);
