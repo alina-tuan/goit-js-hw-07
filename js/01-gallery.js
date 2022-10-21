@@ -25,6 +25,7 @@ function createGalleryItemMarkup(galleryItems) {
     })
       .join('');
 };
+let modalWindow;
 
 galleryContainer.addEventListener("click", onGalleryImgClick);
 function onGalleryImgClick(event) {
@@ -35,16 +36,22 @@ function onGalleryImgClick(event) {
   };
   console.log(event.target);
   
-  const modalWindow = basicLightbox.create(`
+  modalWindow = basicLightbox.create(`
     <img src = "${event.target.dataset.source}"> width = "800" height = "600"
-    `);
+    `, {
+        onShow: (modalWindow) => {
+          window.addEventListener("keydown", onEscapeClose)
+      },
+        onClose: (modalWindow) => {
+          window.removeEventListener("keydown", onEscapeClose)
+      }
+    }
+  );
   modalWindow.show();
+};
 
-  window.addEventListener("keydown", onEscapeClose);
-
-   function onEscapeClose(event) {
-  if (event.key === "Escape") {
+function onEscapeClose(event) {
+     if (event.key === "Escape") {
       modalWindow.close();
     };
 }
-};
